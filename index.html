@@ -488,5 +488,17 @@
 <audio id="bg-music" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
+<script>
+  const music = document.getElementById("bg-music");
+
+  function startMusicOnce() {
+    music.volume = 0.6;   // chỉnh âm lượng
+    music.play().catch(() => {}); // tránh lỗi console
+    document.removeEventListener("click", startMusicOnce);
+  }
+
+  document.addEventListener("click", startMusicOnce);
+</script>
+
 
 </html>
