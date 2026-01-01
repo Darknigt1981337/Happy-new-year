@@ -484,6 +484,8 @@
             if(currentPhase===1) resizeFw();
         }
     </script>
+    const music = document.getElementById("bg-music");
+
 </body>
 <audio id="bg-music" loop>
   <source src="music.mp3" type="audio/mpeg">
@@ -491,14 +493,30 @@
 <script>
   const music = document.getElementById("bg-music");
 
-  function startMusicOnce() {
-    music.volume = 0.6;   // chỉnh âm lượng
-    music.play().catch(() => {}); // tránh lỗi console
-    document.removeEventListener("click", startMusicOnce);
+  function attachMusicToCamera() {
+    const video = document.querySelector("video");
+    if (!video) {
+      setTimeout(attachMusicToCamera, 300);
+      return;
+    }
+
+    function startMusic() {
+      music.volume = 0.6;
+      music.play().catch(() => {});
+      console.log("Nhạc đã phát");
+    }
+
+    // 🔹 Trường hợp video ĐÃ chạy sẵn
+    if (video.readyState >= 2 && !video.paused) {
+      startMusic();
+      return;
+    }
+
+    // 🔹 Trường hợp video CHƯA chạy
+    video.addEventListener("playing", startMusic, { once: true });
   }
 
-  document.addEventListener("click", startMusicOnce);
+  attachMusicToCamera();
 </script>
-
 
 </html>
